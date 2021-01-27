@@ -1,0 +1,65 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+ name: ims-configs
+data:
+ config.json: |-
+   {
+     "localServiceTesting": "false",
+   }
+ 
+ 
+---
+ 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ creationTimestamp: null
+ labels:
+   app: ims-frontend
+ name: ims-frontend
+spec:
+ replicas: 1
+ selector:
+   matchLabels:
+     app: ims-frontend
+ strategy: {}
+ template:
+   metadata:
+     creationTimestamp: null
+     labels:
+       app: ims-frontend
+   spec:
+     volumes:
+     - name: envread-volume
+       configMap:
+         name: ims-configs
+     containers:
+     - image: mrh1127/my-private-repo:v3
+       name: ims-frontend
+       imagePullPolicy: Always
+       resources: {}
+       ports:
+         - containerPort: 8080
+           hostPort: 8080
+       volumeMounts:
+         - name: envread-volume
+           mountPath: /opt/app-root/src/assets/config.json
+           subPath: config.json
+status: {}
+ 
+---
+ 
+apiVersion: v1
+kind: Service
+metadata:
+ name: ims-frontend
+ labels:
+   run: ims-frontend
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+      nodePort: 30000
+  selector:
+    app: ims-frontend
