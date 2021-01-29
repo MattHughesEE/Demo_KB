@@ -33,7 +33,7 @@ pipeline {
     stage('Deploy App') {
       steps {
         script {
-          kubernetesDeploy(configs: "ims-manifest.yaml", kubeconfigId: "mykubeconfig")
+          kubernetesDeploy(configs: "manifest.yaml", kubeconfigId: "mykubeconfig")
         }
       }
     }
