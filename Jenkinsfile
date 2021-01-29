@@ -6,7 +6,7 @@ pipeline {
 
     stage('Checkout Source') {
       steps {
-        git url:'https://github.com/MattHughesEE/Demo_KB.git', branch:'default'
+        git url:'https://github.com/MattHughesEE/Demo_KB.git', branch:'master'
       }
     }
     
